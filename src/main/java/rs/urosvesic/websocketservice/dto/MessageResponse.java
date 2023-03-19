@@ -14,10 +14,11 @@ import lombok.NoArgsConstructor;
 public class MessageResponse implements Dto{
 
 
-    private String sender;
-    private String receiver;
+    private String from;
+    private String to;
     private String content;
     private String time;
+    private boolean seen;
 
     @Override
     public String convertToJsonString(){

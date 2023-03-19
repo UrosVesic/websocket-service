@@ -25,15 +25,14 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityConfig {
 
-    private static final String UIR_ACTUATOR = "/actuator/**";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/actuator/**")
-                .hasAuthority("user")
+                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/sba-websocket/**").permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtConverter());

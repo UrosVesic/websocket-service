@@ -18,7 +18,7 @@ public class WebSocketController {
 
     @PostMapping("/message")
     public void notifyForSentMessage(@RequestBody MessageResponse messageResponse){
-        webSocketService.sendMessage(messageResponse.getSender(),messageResponse);
+        webSocketService.sendMessage(messageResponse.getFrom(),messageResponse);
         System.out.println("Sent message "+messageResponse);
     }
 

@@ -25,7 +25,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/sba-websocket")
                 .setAllowedOriginPatterns("*")
-                .setHandshakeHandler(new UserHandshakeHandler())
+                //.setHandshakeHandler(new UserHandshakeHandler())
+                //.addInterceptors(new CustomInterceptor())
                 .withSockJS();
     }
 

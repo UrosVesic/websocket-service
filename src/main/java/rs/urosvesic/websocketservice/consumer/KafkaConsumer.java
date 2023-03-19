@@ -3,6 +3,7 @@ package rs.urosvesic.websocketservice.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import rs.urosvesic.websocketservice.dto.MessageResponse;
 import rs.urosvesic.websocketservice.dto.NotificationDto;
@@ -14,13 +15,14 @@ public class KafkaConsumer {
 
     private final WebSocketService webSocketService;
 
-    //@KafkaListener(topics = "${message.consumer.topic.name}",groupId = "message-consumer")
+    @KafkaListener(topics = "${message.consumer.topic.name}",groupId = "message-consumer")
     public void listenOnMessageTopic(String receivedMessage){
         try {
             System.out.println("Received message");
             ObjectMapper objectMapper = new ObjectMapper();
             MessageResponse messageResponse = objectMapper.readValue(receivedMessage, MessageResponse.class);
-            webSocketService.sendMessage(messageResponse.getSender(),messageResponse);
+            webSocketService.sendMessage(messageResponse.getTo(),messageResponse);
+            webSocketService.sendNotificationForMessage(messageResponse.getTo());
             System.out.println(messageResponse);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Can't convert from JSON to MessageResponse "+e.getMessage());
@@ -28,7 +30,7 @@ public class KafkaConsumer {
 
     }
 
-    //@KafkaListener(topics = "${notification.consumer.topic.name}",groupId = "message-consumer")
+    @KafkaListener(topics = "${notification.consumer.topic.name}",groupId = "notification-consumer")
     public void listenOnNotificationTopic(String receivedNotification){
         try {
             System.out.println("Received message");

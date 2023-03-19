@@ -13,6 +13,7 @@ public class UserUtil {
     public static Jwt getPrincipal(){ return  (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();}
 
     public static String getToken(){ return getPrincipal().getTokenValue(); }
+
     public static String getCurrentUsername(){
         return getPrincipal().getClaimAsString("username");
     }

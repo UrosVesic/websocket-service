@@ -21,12 +21,17 @@ public class WebSocketService {
     }
 
     public void sendNotification(String username,Dto dto){
-        messagingTemplate.convertAndSend("/topic/notification/"+username,dto);
+        System.out.println("Sending notification to topic /topic/notification/"+username);
+        System.out.println("Notification: "+dto.convertToJsonString());
+        messagingTemplate.convertAndSend("/topic/notification/"+username,dto.convertToJsonString());
     }
 
     public void sendNotificationToUser(String to,Dto dto){
-        messagingTemplate.convertAndSendToUser(to, "/topic/notification",dto);
+        messagingTemplate.convertAndSendToUser(to, "/topic/notification",dto.convertToJsonString());
     }
 
 
+    public void sendNotificationForMessage(String username) {
+        messagingTemplate.convertAndSend("/topic/notification/"+username,"message");
+    }
 }
